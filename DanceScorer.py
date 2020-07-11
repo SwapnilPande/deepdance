@@ -96,6 +96,10 @@ class DanceScorer:
         }
 
     def _calc_angle(self, joint, start_joint, end_joint):
+
+        if joint[2]< 0.1 or start_joint[2]<0.1 or end_joint[2]<0.1:
+            return -1
+
         # Calculate two vectors that form joint
         v1 = start_joint[0:2] - joint[0:2]
         v2 = end_joint[0:2] - joint[0:2]
@@ -108,10 +112,17 @@ class DanceScorer:
         v2_mag = np.linalg.norm(v2)
 
         # Calculate angle
-
+        if dot_prod/v1_mag/v2_mag > 1.:
+            return np.arccos(1.)
+        elif dot_prod/v1_mag/v2_mag < -1.:
+            return np.arccos(-1.)
         return np.arccos(dot_prod/v1_mag/v2_mag)
 
     def _calc_velocity(self, prev_joint, cur_joint):
+
+        if prev_joint[2]<0.1 or cur_joint[2]<0.1:
+            return -1
+
         v1 = prev_joint[0:2]
         v2 = cur_joint[0:2]
 
@@ -145,15 +156,15 @@ class DanceScorer:
 
         for i, pose in enumerate(self.poses[dancer]):
             joint_angle_args = {
-                "lshoulder" : [pose[Joint.LSHOULDER,:], pose[Joint.NECK,:], pose[Joint.LELBOW,:]],
-                "rShoulder" : [pose[Joint.RSHOULDER,:], pose[Joint.NECK,:], pose[Joint.RELBOW,:]],
-                "lelbow" : [pose[Joint.LELBOW,:], pose[Joint.LSHOULDER,:], pose[Joint.LWRIST,:]],
-                "relbow" : [pose[Joint.RELBOW,:], pose[Joint.RSHOULDER,:], pose[Joint.RWRIST,:]],
-                "lhip" : [pose[Joint.LHIP,:], pose[Joint.NECK,:], pose[Joint.LKNEE,:]],
-                "rhip" : [pose[Joint.RHIP,:], pose[Joint.NECK,:], pose[Joint.RKNEE,:]],
-                "lknee" : [pose[Joint.LKNEE,:], pose[Joint.LHIP,:], pose[Joint.LANKLE,:]],
-                "rknee" : [pose[Joint.RKNEE,:], pose[Joint.RHIP,:], pose[Joint.RANKLE,:]],
-                "lankle" : [pose[Joint.LANKLE,:], pose[Joint.LKNEE,:], pose[Joint.RBIGTOE,:]]
+                "lshoulder" : [pose[0,Joint.LSHOULDER,:], pose[0,Joint.NECK,:], pose[0,Joint.LELBOW,:]],
+                "rShoulder" : [pose[0,Joint.RSHOULDER,:], pose[0,Joint.NECK,:], pose[0,Joint.RELBOW,:]],
+                "lelbow" : [pose[0,Joint.LELBOW,:], pose[0,Joint.LSHOULDER,:], pose[0,Joint.LWRIST,:]],
+                "relbow" : [pose[0,Joint.RELBOW,:], pose[0,Joint.RSHOULDER,:], pose[0,Joint.RWRIST,:]],
+                "lhip" : [pose[0,Joint.LHIP,:], pose[0,Joint.NECK,:], pose[0,Joint.LKNEE,:]],
+                "rhip" : [pose[0,Joint.RHIP,:], pose[0,Joint.NECK,:], pose[0,Joint.RKNEE,:]],
+                "lknee" : [pose[0,Joint.LKNEE,:], pose[0,Joint.LHIP,:], pose[0,Joint.LANKLE,:]],
+                "rknee" : [pose[0,Joint.RKNEE,:], pose[0,Joint.RHIP,:], pose[0,Joint.RANKLE,:]],
+                "lankle" : [pose[0,Joint.LANKLE,:], pose[0,Joint.LKNEE,:], pose[0,Joint.RBIGTOE,:]]
             }
 
             # Calculate all of the joint angles and write them to the position metrics dictionary
@@ -164,15 +175,15 @@ class DanceScorer:
             if(i > 0):
                 posePrev = self.poses[dancer][i-1]
                 joint_vel_args = {
-                    "lshoulder" : [posePrev[Joint.LSHOULDER,:], pose[Joint.LSHOULDER,:]],
-                    "rShoulder" : [posePrev[Joint.RSHOULDER,:], pose[Joint.RSHOULDER,:]],
-                    "lelbow" : [posePrev[Joint.LELBOW,:], pose[Joint.LELBOW,:]],
-                    "relbow" : [posePrev[Joint.RELBOW,:], pose[Joint.RELBOW,:]],
-                    "lhip" : [posePrev[Joint.LHIP,:], pose[Joint.LHIP,:]],
-                    "rhip" : [posePrev[Joint.RHIP,:], pose[Joint.RHIP,:]],
-                    "lknee" : [posePrev[Joint.LKNEE,:], pose[Joint.LKNEE,:]],
-                    "rknee" : [posePrev[Joint.RKNEE,:], pose[Joint.RKNEE,:]],
-                    "lankle" : [posePrev[Joint.RANKLE,:], pose[Joint.LANKLE,:]]
+                    "lshoulder" : [posePrev[0,Joint.LSHOULDER,:], pose[0,Joint.LSHOULDER,:]],
+                    "rShoulder" : [posePrev[0,Joint.RSHOULDER,:], pose[0,Joint.RSHOULDER,:]],
+                    "lelbow" : [posePrev[0,Joint.LELBOW,:], pose[0,Joint.LELBOW,:]],
+                    "relbow" : [posePrev[0,Joint.RELBOW,:], pose[0,Joint.RELBOW,:]],
+                    "lhip" : [posePrev[0,Joint.LHIP,:], pose[0,Joint.LHIP,:]],
+                    "rhip" : [posePrev[0,Joint.RHIP,:], pose[0,Joint.RHIP,:]],
+                    "lknee" : [posePrev[0,Joint.LKNEE,:], pose[0,Joint.LKNEE,:]],
+                    "rknee" : [posePrev[0,Joint.RKNEE,:], pose[0,Joint.RKNEE,:]],
+                    "lankle" : [posePrev[0,Joint.RANKLE,:], pose[0,Joint.LANKLE,:]]
                 }
 
                 for joint, args in joint_vel_args.items():
@@ -197,8 +208,13 @@ class DanceScorer:
             A dictionary containing scores for individual limbs as well as an overall score
         """
 
+
+        # np.save('FF-caro1',np.array(self.poses['student']))
+        # np.save('FF-caro2', np.array(self.poses['teacher']))
         self._calc_dance_metrics("student")
         self._calc_dance_metrics("teacher")
+
+
 
         position_errors = {
                 "lshoulder" : None,
@@ -249,6 +265,10 @@ class DanceScorer:
         }
 
         for joint in position_errors:
+            for i in range(self.position_metrics['student'][joint].shape[0]):
+                if self.position_metrics['student'][joint][i]==-1 or self.position_metrics['teacher'][joint][i]==-1:
+                    self.position_metrics['student'][joint][i] = 0
+                    self.position_metrics['teacher'][joint][i] = 0
             position_errors[joint] = np.linalg.norm(np.expand_dims(self.position_metrics["student"][joint] - self.position_metrics["teacher"][joint], axis = 1), axis = 1)
             velocity_errors[joint] = np.linalg.norm(np.expand_dims(self.velocity_metrics["student"][joint] - self.velocity_metrics["teacher"][joint], axis = 1), axis = 1)
 
@@ -259,11 +279,16 @@ class DanceScorer:
 
 
 if __name__ == "__main__":
-    keypoints = np.squeeze(np.load("posekeypoints.npy"))
-
+    # keypoints = np.squeeze(np.load("posekeypoints.npy"))
+    dancer = np.load("student_array.npy")
+    teacher = np.load("teacher_array.npy")
     test = DanceScorer()
-    test.add_frame_pose(keypoints, keypoints)
-    test.add_frame_pose(keypoints, keypoints)
+
+    test.poses['student'] = dancer
+    test.poses['teacher'] = teacher
+    test.score_dancer()
+    # test.add_frame_pose(keypoints, keypoints)
+    # test.add_frame_pose(keypoints, keypoints)
 
     print(test.score_dancer())
 

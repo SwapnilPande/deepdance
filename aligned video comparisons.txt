@@ -1,0 +1,12 @@
+
+GOOD
+({'lshoulder': 0.45917496, 'rShoulder': 0.5444627, 'lelbow': 0.7029104, 'relbow': 0.59579587, 'lhip': 0.097973034, 'rhip': 0.180706, 'lknee': 0.014676243, 'rknee': 0.034693412, 'lankle': 0.0}, {'lshoulder': 5.55676, 'rShoulder': 4.996526, 'lelbow': 9.131172, 'relbow': 9.543832, 'lhip': 4.9034624, 'rhip': 5.111091, 'lknee': 7.796226, 'rknee': 7.479751, 'lankle': 102.51471})
+
+BAD
+({'lshoulder': 0.34316504, 'rShoulder': 0.47352397, 'lelbow': 0.91151386, 'relbow': 0.93283314, 'lhip': 0.11938149, 'rhip': 0.14704385, 'lknee': 0.007855074, 'rknee': 0.029952276, 'lankle': 0.0}, {'lshoulder': 5.1523175, 'rShoulder': 5.1426578, 'lelbow': 8.957379, 'relbow': 9.165717, 'lhip': 5.0302806, 'rhip': 5.0139713, 'lknee': 6.466296, 'rknee': 6.9362636, 'lankle': 100.71724})
+
+caroline to caroline
+({'lshoulder': 0.27153593, 'rShoulder': 0.28593433, 'lelbow': 0.54437935, 'relbow': 0.352361, 'lhip': 0.1460823, 'rhip': 0.14325418, 'lknee': 0.1611927, 'rknee': 0.16741142, 'lankle': 0.24060664}, {'lshoulder': 5.964218, 'rShoulder': 5.8751774, 'lelbow': 9.52516, 'relbow': 9.543116, 'lhip': 4.82476, 'rhip': 4.320076, 'lknee': 5.641077, 'rknee': 5.8494234, 'lankle': 45.479027})
+
+ffcaro to ffcaro
+({'lshoulder': 0.2957651, 'rShoulder': 0.36371976, 'lelbow': 0.55728596, 'relbow': 0.38713145, 'lhip': 0.17357115, 'rhip': 0.16491835, 'lknee': 0.21125811, 'rknee': 0.21676679, 'lankle': 0.30474687}, {'lshoulder': 7.450131, 'rShoulder': 7.2843747, 'lelbow': 11.650993, 'relbow': 12.356046, 'lhip': 5.8807, 'rhip': 5.2350097, 'lknee': 6.9796987, 'rknee': 7.067009, 'lankle': 45.0004})
