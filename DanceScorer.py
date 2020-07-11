@@ -44,8 +44,7 @@ class DanceScorer:
             A dictionary containing scores for individual limbs as well as an overall score
         """
 
-        return poses
-
+        return {}
 
 
 
