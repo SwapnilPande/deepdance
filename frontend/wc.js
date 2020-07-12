@@ -62,9 +62,20 @@ var requestOptions = {
 
 fetch("http://127.0.0.1:5000/test", requestOptions)
   .then(response => response.text())
-  .then(result => console.log(result))
+  .then(result => {
+    console.log(result);
+    var result_text = document.getElementById("result_text");
+    result_text.innerHTML = "Your results: " + result;
+  })
   .catch(error => console.log('error', error));
 }
+
+var modal = document.getElementById("myModal");
+var modspan = document.getElementsByClassName("close")[0];
+modspan.onclick = function() {
+  modal.style.display = "none";
+}
+
 
 
 
