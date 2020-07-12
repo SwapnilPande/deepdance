@@ -4,7 +4,7 @@ import sys
 import cv2
 from tqdm import tqdm
 from DanceScorer import DanceScorer
-from alignment import align
+from alignment import align, check_alignment
 
 try:
     sys.path.append('/usr/local/python')
@@ -88,8 +88,12 @@ class PoseEstimator:
         print('1/1')
         self.write_video('result.mp4', frames, fps, (int(frame_width), int(frame_height)))
 
-    def compare_videos(self, path1, path2, write=False):
-        frames1, frames2, fps, shape1, shape2 = align(path1, path2)
+    def compare_videos(self, path1, path2, write_skeleton=False, skeleton_out1='', skeleton_out2='',
+                       write_aligned=False, aligned_out1='', aligned_out2='',
+                       write_combined=False, combined_out=''):
+        frames1, frames2, fps, shape1, shape2 = align(path1, path2, outpath1=aligned_out1,
+                                                      outpath2=aligned_out2,
+                                                      write=write_aligned)
 
         cvOut1 = []
         cvOut2 = []
@@ -97,11 +101,13 @@ class PoseEstimator:
             datum1, datum2 = self.process_image_pair(frames1[i], frames2[i])
             cvOut1.append(datum1.cvOutputData)
             cvOut2.append(datum2.cvOutputData)
-        if write:
+        if write_skeleton:
             print('1/2')
-            self.write_video('video1Processed.mp4', cvOut1, fps, shape1)
+            self.write_video(skeleton_out1, cvOut1, fps, shape1)
             print('2/2')
-            self.write_video('video2Processed.mp4', cvOut2, fps, shape2)
+            self.write_video(skeleton_out2, cvOut2, fps, shape2)
+        if write_combined:
+            check_alignment(frames1, frames2, fps, shape1, shape2, combined_out)
         return self.dance_end()
 
     def write_video(self, fname, frames,fps, shape):
@@ -118,6 +124,8 @@ if __name__ == "__main__":
 
     pose_estimator = PoseEstimator()
 
-    fname1 = 'videos/david-ymca.mp4'
-    fname2 = 'videos/ymca.mp4'
-    print(pose_estimator.compare_videos(fname1, fname2, write=False))
+    fname1 = 'videos/david-choreo.mp4'
+    fname2 = 'videos/caroline-choreo.mp4'
+    print(pose_estimator.compare_videos(fname1, fname2, write_skeleton=False, skeleton_out1='', skeleton_out2='',
+                       write_aligned=True, aligned_out1='videos/aligned-david-choreo.mp4', aligned_out2='videos/aligned-davidcaro-choreo.mp4',
+                       write_combined=True, combined_out='verification/david-caro-choreo.mp4'))

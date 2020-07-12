@@ -214,8 +214,8 @@ class DanceScorer:
         """
 
 
-        # np.save('FF-david-ymca',np.array(self.poses['student']))
-        # np.save('FF-caro-ymca', np.array(self.poses['teacher']))
+        np.save('david-choreo',np.array(self.poses['student']))
+        np.save('davidcaro-choreo', np.array(self.poses['teacher']))
         self._calc_dance_metrics("student")
         self._calc_dance_metrics("teacher")
 
