@@ -1,12 +1,12 @@
 
-GOOD
-({'lshoulder': 0.45917496, 'rShoulder': 0.5444627, 'lelbow': 0.7029104, 'relbow': 0.59579587, 'lhip': 0.097973034, 'rhip': 0.180706, 'lknee': 0.014676243, 'rknee': 0.034693412, 'lankle': 0.0}, {'lshoulder': 5.55676, 'rShoulder': 4.996526, 'lelbow': 9.131172, 'relbow': 9.543832, 'lhip': 4.9034624, 'rhip': 5.111091, 'lknee': 7.796226, 'rknee': 7.479751, 'lankle': 102.51471})
+good-ymca done
+{'lshoulder': 0.07378373494660528, 'rShoulder': 0.0300947199803121, 'lelbow': 0.0036252990715277544, 'relbow': 0.012564527354092414, 'lhip': 0.6047563609058526, 'rhip': 0.354452700881539, 'lknee': 0.9329435965007793, 'rknee': 0.8125394766632579, 'lankle': 1.0, 'rankle': 0.9948500637652695, 'average': 0.933682561794702}
 
-BAD
-({'lshoulder': 0.34316504, 'rShoulder': 0.47352397, 'lelbow': 0.91151386, 'relbow': 0.93283314, 'lhip': 0.11938149, 'rhip': 0.14704385, 'lknee': 0.007855074, 'rknee': 0.029952276, 'lankle': 0.0}, {'lshoulder': 5.1523175, 'rShoulder': 5.1426578, 'lelbow': 8.957379, 'relbow': 9.165717, 'lhip': 5.0302806, 'rhip': 5.0139713, 'lknee': 6.466296, 'rknee': 6.9362636, 'lankle': 100.71724})
+bad-ymca done
+{'lshoulder': 0.1660674663808297, 'rShoulder': 0.08068197492854412, 'lelbow': 0.0010606553980441191, 'relbow': 0.000382361395545594, 'lhip': 0.5424212660717167, 'rhip': 0.4646564020174484, 'lknee': 0.9723959273048737, 'rknee': 0.870262335821635, 'lankle': 1.0, 'rankle': 1.0, 'average': 0.8519303070626253}
 
-caroline to caroline
-({'lshoulder': 0.27153593, 'rShoulder': 0.28593433, 'lelbow': 0.54437935, 'relbow': 0.352361, 'lhip': 0.1460823, 'rhip': 0.14325418, 'lknee': 0.1611927, 'rknee': 0.16741142, 'lankle': 0.24060664}, {'lshoulder': 5.964218, 'rShoulder': 5.8751774, 'lelbow': 9.52516, 'relbow': 9.543116, 'lhip': 4.82476, 'rhip': 4.320076, 'lknee': 5.641077, 'rknee': 5.8494234, 'lankle': 45.479027})
+caro-to-caro choreo done
+{'lshoulder': 0.0957754311758261, 'rShoulder': 0.1312524249385274, 'lelbow': 0.0036828361276619592, 'relbow': 0.009702974723199143, 'lhip': 0.13014872157386548, 'rhip': 0.1523016394432266, 'lknee': 0.18374776467582854, 'rknee': 0.13912097421815828, 'lankle': 0.06367323078624332, 'rankle': 0.03623013908368056, 'average': 0.2080399500841678}
 
 ffcaro to ffcaro
 ({'lshoulder': 0.2957651, 'rShoulder': 0.36371976, 'lelbow': 0.55728596, 'relbow': 0.38713145, 'lhip': 0.17357115, 'rhip': 0.16491835, 'lknee': 0.21125811, 'rknee': 0.21676679, 'lankle': 0.30474687}, {'lshoulder': 7.450131, 'rShoulder': 7.2843747, 'lelbow': 11.650993, 'relbow': 12.356046, 'lhip': 5.8807, 'rhip': 5.2350097, 'lknee': 6.9796987, 'rknee': 7.067009, 'lankle': 45.0004})
@@ -14,8 +14,8 @@ ffcaro to ffcaro
 ffymca
 ({'lshoulder': 0.58163613, 'rShoulder': 0.57018656, 'lelbow': 0.64074177, 'relbow': 0.55620795, 'lhip': 0.10523933, 'rhip': 0.20003286, 'lknee': 0.01671676, 'rknee': 0.04394387, 'lankle': 0.0}, {'lshoulder': 5.203464, 'rShoulder': 4.981195, 'lelbow': 9.444562, 'relbow': 9.396562, 'lhip': 4.773003, 'rhip': 5.006979, 'lknee': 8.293209, 'rknee': 7.64964, 'lankle': 87.6687})
 
-david choreo
-({'lshoulder': 0.271929, 'rShoulder': 0.3829043, 'lelbow': 0.40603796, 'relbow': 0.58638364, 'lhip': 0.22024354, 'rhip': 0.21185009, 'lknee': 0.23842365, 'rknee': 0.20378041, 'lankle': 0.4011321, 'rankle': 0.37867197}, {'lshoulder': 7.57666, 'rShoulder': 7.320571, 'lelbow': 10.502584, 'relbow': 10.60552, 'lhip': 7.055091, 'rhip': 6.8106346, 'lknee': 7.0794983, 'rknee': 6.96672, 'lankle': 8.749486, 'rankle': 7.2841096})
+david's choreo to caro's done
+{'lshoulder': 0.2560487644168341, 'rShoulder': 0.12118965487517963, 'lelbow': 0.048490385757102406, 'relbow': 0.0074832927440993124, 'lhip': 0.2933696874847791, 'rhip': 0.2774005451171997, 'lknee': 0.23190189269283668, 'rknee': 0.23480813684635726, 'lankle': 0.023111442507148583, 'rankle': 0.03871253479379555, 'average': 0.3371535941917732}
 
-standstill to choreo
-({'lshoulder': 0.2984616, 'rShoulder': 0.34413967, 'lelbow': 0.5794077, 'relbow': 0.6642273, 'lhip': 0.20771167, 'rhip': 0.22811675, 'lknee': 0.3410947, 'rknee': 0.23876478, 'lankle': 0.38659823, 'rankle': 0.28495848}, {'lshoulder': 7.448461, 'rShoulder': 6.733509, 'lelbow': 10.006572, 'relbow': 11.062759, 'lhip': 5.9010324, 'rhip': 5.3090687, 'lknee': 6.2645645, 'rknee': 6.0654893, 'lankle': 7.6790667, 'rankle': 5.7849307})
+standstill to choreo done
+{'lshoulder': 0.24907490003668364, 'rShoulder': 0.18651159921259097, 'lelbow': 0.02704961498719194, 'relbow': 0.011295343708783268, 'lhip': 0.2815139467616983, 'rhip': 0.24534652470117146, 'lknee': 0.09179429465323907, 'rknee': 0.1858353036909035, 'lankle': 0.02658666662971587, 'rankle': 0.1328506343005338, 'average': 0.3163289423101526}
