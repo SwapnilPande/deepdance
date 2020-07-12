@@ -312,13 +312,17 @@ class DanceScorer:
             sigma = DanceScorer.RANGE[joint]/DanceScorer.SIGMA_SCALE
 
             z = avg_position_errors[joint]/sigma
-            scores[joint] = 2.5*((-1*(norm.cdf(abs(z))*2-1))+1)
+            scores[joint] = (-1*(norm.cdf(abs(z))*2-1))+1
 
         total = 0
         avg = 0
+
         for joint, score in scores.items():
-            avg += score
-            total += 1
+            # Scale score by 2.5 to make it less disheartening
+            # With the current scheme, the scores are very low, scale them up so they saturate the 0-100 spectrum better
+            if(score != 1):
+                avg += 2.5*score
+                total += 1
 
         scores["average"] = avg/total
 
