@@ -53,7 +53,8 @@ class DanceScorer:
                 "rhip" : [],
                 "lknee" : [],
                 "rknee" : [],
-                "lankle" : []
+                "lankle" : [],
+                "rankle" : []
             },
             "teacher" : {
                 "lshoulder" : [],
@@ -64,7 +65,8 @@ class DanceScorer:
                 "rhip" : [],
                 "lknee" : [],
                 "rknee" : [],
-                "lankle" : []
+                "lankle" : [],
+                "rankle" : []
             }
         }
 
@@ -80,7 +82,8 @@ class DanceScorer:
                 "rhip" : [],
                 "lknee" : [],
                 "rknee" : [],
-                "lankle" : []
+                "lankle" : [],
+                "rankle" : []
             },
             "teacher" : {
                 "lshoulder" : [],
@@ -91,7 +94,8 @@ class DanceScorer:
                 "rhip" : [],
                 "lknee" : [],
                 "rknee" : [],
-                "lankle" : []
+                "lankle" : [],
+                "rankle" : []
             }
         }
 
@@ -153,7 +157,6 @@ class DanceScorer:
             self.position_metrics[dancer][joint] = np.zeros(shape = (len(self.poses[dancer]), ), dtype = np.float32)
             self.velocity_metrics[dancer][joint] = np.zeros(shape = (len(self.poses[dancer])-1, ), dtype = np.float32)
 
-
         for i, pose in enumerate(self.poses[dancer]):
             joint_angle_args = {
                 "lshoulder" : [pose[0,Joint.LSHOULDER,:], pose[0,Joint.NECK,:], pose[0,Joint.LELBOW,:]],
@@ -164,7 +167,8 @@ class DanceScorer:
                 "rhip" : [pose[0,Joint.RHIP,:], pose[0,Joint.NECK,:], pose[0,Joint.RKNEE,:]],
                 "lknee" : [pose[0,Joint.LKNEE,:], pose[0,Joint.LHIP,:], pose[0,Joint.LANKLE,:]],
                 "rknee" : [pose[0,Joint.RKNEE,:], pose[0,Joint.RHIP,:], pose[0,Joint.RANKLE,:]],
-                "lankle" : [pose[0,Joint.LANKLE,:], pose[0,Joint.LKNEE,:], pose[0,Joint.RBIGTOE,:]]
+                "lankle" : [pose[0,Joint.LANKLE,:], pose[0,Joint.LKNEE,:], pose[0,Joint.LBIGTOE,:]],
+                "rankle" : [pose[0,Joint.RANKLE,:], pose[0,Joint.RKNEE,:], pose[0,Joint.RBIGTOE,:]]
             }
 
             # Calculate all of the joint angles and write them to the position metrics dictionary
@@ -183,7 +187,8 @@ class DanceScorer:
                     "rhip" : [posePrev[0,Joint.RHIP,:], pose[0,Joint.RHIP,:]],
                     "lknee" : [posePrev[0,Joint.LKNEE,:], pose[0,Joint.LKNEE,:]],
                     "rknee" : [posePrev[0,Joint.RKNEE,:], pose[0,Joint.RKNEE,:]],
-                    "lankle" : [posePrev[0,Joint.RANKLE,:], pose[0,Joint.LANKLE,:]]
+                    "lankle" : [posePrev[0,Joint.LANKLE,:], pose[0,Joint.LANKLE,:]],
+                    "rankle" : [posePrev[0,Joint.RANKLE,:], pose[0,Joint.RANKLE,:]]
                 }
 
                 for joint, args in joint_vel_args.items():
@@ -225,7 +230,8 @@ class DanceScorer:
                 "rhip" : None,
                 "lknee" : None,
                 "rknee" : None,
-                "lankle" : None
+                "lankle" : None,
+                "rankle" : None
             }
 
         velocity_errors = {
@@ -237,20 +243,22 @@ class DanceScorer:
             "rhip" : None,
             "lknee" : None,
             "rknee" : None,
-            "lankle" : None
+            "lankle" : None,
+            "rankle" : None
         }
 
         avg_position_errors = {
-                "lshoulder" : None,
-                "rShoulder" : None,
-                "lelbow" : None,
-                "relbow" : None,
-                "lhip" : None,
-                "rhip" : None,
-                "lknee" : None,
-                "rknee" : None,
-                "lankle" : None
-            }
+            "lshoulder" : None,
+            "rShoulder" : None,
+            "lelbow" : None,
+            "relbow" : None,
+            "lhip" : None,
+            "rhip" : None,
+            "lknee" : None,
+            "rknee" : None,
+            "lankle" : None,
+            "rankle" : None
+        }
 
         avg_velocity_errors = {
             "lshoulder" : None,
@@ -261,7 +269,8 @@ class DanceScorer:
             "rhip" : None,
             "lknee" : None,
             "rknee" : None,
-            "lankle" : None
+            "lankle" : None,
+            "rankle" : None
         }
 
         for joint in position_errors:
@@ -279,21 +288,102 @@ class DanceScorer:
 
 
 if __name__ == "__main__":
+    datasets = ["numpyfiles/caro-ymca.npy",
+                "numpyfiles/caro1.npy",
+                "numpyfiles/caro2.npy",
+                "numpyfiles/david-null.npy",
+                "numpyfiles/david-ymca.npy",
+                "numpyfiles/FF-caro1.npy",
+                "numpyfiles/FF-caro2.npy",
+                "numpyfiles/null-ymca.npy"]
     # keypoints = np.squeeze(np.load("posekeypoints.npy"))
-    dancer = np.load("student_array.npy")
-    teacher = np.load("teacher_array.npy")
-    test = DanceScorer()
 
-    test.poses['student'] = dancer
-    test.poses['teacher'] = teacher
-    test.score_dancer()
-    # test.add_frame_pose(keypoints, keypoints)
-    # test.add_frame_pose(keypoints, keypoints)
+    joint_extremes = {
+            "lshoulder" : {
+                "min" : 5.0,
+                "max" : 0.0
+            },
+            "rShoulder" : {
+                "min" : 5.0,
+                "max" : 0.0
+            },
+            "lelbow" : {
+                "min" : 5.0,
+                "max" : 0.0
+            },
+            "relbow" : {
+                "min" : 5.0,
+                "max" : 0.0
+            },
+            "lhip" : {
+                "min" : 5.0,
+                "max" : 0.0
+            },
+            "rhip" : {
+                "min" : 5.0,
+                "max" : 0.0
+            },
+            "lknee" : {
+                "min" : 5.0,
+                "max" : 0.0
+            },
+            "rknee" : {
+                "min" : 5.0,
+                "max" : 0.0
+            },
+            "lankle" : {
+                "min" : 5.0,
+                "max" : 0.0
+            },
+            "rankle" : {
+                "min" : 5.0,
+                "max" : 0.0
+            }
+        }
 
-    print(test.score_dancer())
+    for dataset in datasets:
+        data = np.load(dataset)
+        test = DanceScorer()
+        print(data.shape)
+        test.poses["student"] = data
+
+        test._calc_dance_metrics("student")
+
+        dataset_average = 0.0
+        dataset_count = 0.0
+        for joint in test.velocity_metrics["student"]:
+
+            dataset_average += np.sum(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0])
+            dataset_count += len(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0])
+
+            temp_max_val = 0.0
+            temp_min_val = 5.0
+
+            temp_max_val = np.amax(test.velocity_metrics["student"][joint])
+
+            if(len(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0]) > 0):
+                temp_min_val = np.amin(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0])
+
+            if(temp_max_val > joint_extremes[joint]["max"]):
+                joint_extremes[joint]["max"] = temp_max_val
+
+            if(temp_min_val < joint_extremes[joint]["min"]):
+                joint_extremes[joint]["min"] = temp_min_val
+
+
+        print("{} average velocity: {}".format(dataset, dataset_average/dataset_count))
 
 
 
 
+    for joint in test.velocity_metrics["student"]:
+        print("{}: {} {}".format(joint, joint_extremes[joint]["min"], joint_extremes[joint]["max"]))
 
 
+    # test.poses['student'] = dancer
+    # test.poses['teacher'] = teacher
+    # test.score_dancer()
+    # # test.add_frame_pose(keypoints, keypoints)
+    # # test.add_frame_pose(keypoints, keypoints)
+
+    # print(test.score_dancer())
