@@ -33,7 +33,7 @@ function startRecording(){
   function stopRecording(){
     rec.stop();
     // switch button's behavior
-    btn.textContent = 'start recording';
+    btn.textContent = 'Start Dancing!';
     btn.onclick = startRecording;
   }
 }
