@@ -314,6 +314,13 @@ class DanceScorer:
             z = avg_position_errors[joint]/sigma
             scores[joint] = 2.5*((-1*(norm.cdf(abs(z))*2-1))+1)
 
+        total = 0
+        avg = 0
+        for joint, score in scores.items():
+            avg += score
+            total += 1
+
+        scores["average"] = avg/total
 
         return scores
 
