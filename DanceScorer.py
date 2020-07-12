@@ -398,7 +398,7 @@ class DanceScorer:
             # Scale score by 2.5 to make it less disheartening
             # With the current scheme, the scores are very low, scale them up so they saturate the 0-100 spectrum better
             if(score != 1):
-                avg += 2.5*score
+                avg += 2.2*score
                 total += 1
 
         scores["average"] = avg/total
