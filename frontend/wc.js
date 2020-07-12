@@ -1,5 +1,3 @@
-
-
 const vid = document.getElementById('video');
 const teacher = document.getElementById('teacher'); 
 navigator.mediaDevices.getUserMedia({video: true}) // request cam
@@ -39,7 +37,7 @@ function startRecording(){
     btn.onclick = startRecording;
   }
 }
-function score(blob, teacher){
+async function score(blob, teacher){
   // uses the <a download> to download a Blob
   console.log(blob)
   let a = document.createElement('a'); 
@@ -47,12 +45,32 @@ function score(blob, teacher){
   a.download = 'recorded.webm';
   document.body.appendChild(a);
   a.click();
+
+ var myHeaders = new Headers();
+//myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+let master = await fetch(teacher).then(r => r.blob());
+var formdata = new FormData();
+formdata.append("teacher", master, 'teacher.webm');
+formdata.append("student", blob, 'recorded.webm' );
+//localStorage.myfile = blob;
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+
+fetch("http://127.0.0.1:5000/test", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
 }
 
 
 
 (function localFileVideoPlayer() {
-	'use strict'
+  'use strict'
   var URL = window.URL || window.webkitURL
   var displayMessage = function (message, isError) {
     var element = document.querySelector('#message')
