@@ -1,6 +1,6 @@
 const vid = document.getElementById('video');
 const teacher = document.getElementById('teacher'); 
-navigator.mediaDevices.getUserMedia({video: true}) // request cam
+navigator.mediaDevices.getUserMedia({video: true, audio:true}) // request cam
 .then(stream => {
   vid.srcObject = stream; // don't use createObjectURL(MediaStream)
   return vid.play(); // returns a Promise
@@ -33,7 +33,7 @@ function startRecording(){
   function stopRecording(){
     rec.stop();
     // switch button's behavior
-    btn.textContent = 'start recording';
+    btn.textContent = 'Start Dancing!';
     btn.onclick = startRecording;
   }
 }

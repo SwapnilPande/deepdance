@@ -14,8 +14,8 @@ def align(fname1, fname2, write=False, outpath1='', outpath2='', offset=0):
     :param outpath2: path for video2 if saving
     :return: frames1, frames2, fps, shape1, shape2
     '''
-    delay = alignment_by_row(fname1, fname2, './')
-
+    # delay = alignment_by_row(fname1, fname2, '..')
+    delay = (0,0)
     cap1 = cv2.VideoCapture(fname1)
     cap2 = cv2.VideoCapture(fname2)
     fps = cap1.get(cv2.CAP_PROP_FPS)
@@ -76,7 +76,7 @@ def check_alignment(frames1, frames2, fps, shape1, shape2, outpath):
 def check_alignment_from_files(fname1, fname2, outpath):
     cap1 = cv2.VideoCapture(fname1)
     cap2 = cv2.VideoCapture(fname2)
-    fps = cap1.get(cv2.CAP_PROP_FPS)
+    fps = cap2.get(cv2.CAP_PROP_FPS)
     frame_width1 = cap1.get(3)
     frame_height1 = cap1.get(4)
     frame_width2 = cap2.get(3)
@@ -93,12 +93,12 @@ def check_alignment_from_files(fname1, fname2, outpath):
             frames2.append(frame2)
         else:
             break
-    check_alignment(frames1, frames2,fps, (int(frame_width1), int(frame_height1)), (int(frame_width2), int(frame_height2)), outpath)
+    check_alignment(frames1, frames2, fps, (int(frame_width1), int(frame_height1)), (int(frame_width2), int(frame_height2)), outpath)
 
 if __name__ == '__main__':
-    frames1, frames2, fps, shape1, shape2 = align('videos/david-ymca.mp4', 'videos/ymca.mp4',
-                                                  write=True,
-                                                  outpath1='FF-align-david-ymca.mp4',
-                                                  outpath2='FF-align-caro-ymca.mp4',
-                                                  offset=7000)
-    check_alignment(frames1, frames2, fps, shape1, shape2, 'verification/ff-ymca-aligned.mp4')
+    # frames1, frames2, fps, shape1, shape2 = align('videos/david-ymca.mp4', 'videos/ymca.mp4',
+    #                                               write=True,
+    #                                               outpath1='FF-align-david-ymca.mp4',
+    #                                               outpath2='FF-align-caro-ymca.mp4',
+    #                                               offset=7000)
+    check_alignment_from_files('verification/david-hands-feet.mp4', 'verification/caro-hands-feet.mp4', 'verification/duet-hands-feet.mp4')

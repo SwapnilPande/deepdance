@@ -33,10 +33,10 @@ app.whenReady().then(() => {
   })
 
 
-  PythonShell.run('../api.py', null, function (err, results) {
-  if (err) throw err;
-  console.log(results);
-});
+//   PythonShell.run('../api.py', null, function (err, results) {
+//   if (err) throw err;
+//   console.log(results);
+// });
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

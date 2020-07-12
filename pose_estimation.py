@@ -120,6 +120,9 @@ class PoseEstimator:
                 pbar.update(1)
         output.release()
 
+    def get_wireframe(self, outpath):
+        self.dance_scorer.generate_wireframe_video(outpath)
+
 if __name__ == "__main__":
 
     pose_estimator = PoseEstimator()
