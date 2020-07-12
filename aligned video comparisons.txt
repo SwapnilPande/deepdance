@@ -16,3 +16,6 @@ ffymca
 
 david choreo
 ({'lshoulder': 0.271929, 'rShoulder': 0.3829043, 'lelbow': 0.40603796, 'relbow': 0.58638364, 'lhip': 0.22024354, 'rhip': 0.21185009, 'lknee': 0.23842365, 'rknee': 0.20378041, 'lankle': 0.4011321, 'rankle': 0.37867197}, {'lshoulder': 7.57666, 'rShoulder': 7.320571, 'lelbow': 10.502584, 'relbow': 10.60552, 'lhip': 7.055091, 'rhip': 6.8106346, 'lknee': 7.0794983, 'rknee': 6.96672, 'lankle': 8.749486, 'rankle': 7.2841096})
+
+standstill to choreo
+({'lshoulder': 0.2984616, 'rShoulder': 0.34413967, 'lelbow': 0.5794077, 'relbow': 0.6642273, 'lhip': 0.20771167, 'rhip': 0.22811675, 'lknee': 0.3410947, 'rknee': 0.23876478, 'lankle': 0.38659823, 'rankle': 0.28495848}, {'lshoulder': 7.448461, 'rShoulder': 6.733509, 'lelbow': 10.006572, 'relbow': 11.062759, 'lhip': 5.9010324, 'rhip': 5.3090687, 'lknee': 6.2645645, 'rknee': 6.0654893, 'lankle': 7.6790667, 'rankle': 5.7849307})

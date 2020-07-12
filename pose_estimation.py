@@ -124,8 +124,8 @@ if __name__ == "__main__":
 
     pose_estimator = PoseEstimator()
 
-    fname1 = 'videos/david-choreo.mp4'
+    fname1 = 'videos/david-standstill.mp4'
     fname2 = 'videos/caroline-choreo.mp4'
     print(pose_estimator.compare_videos(fname1, fname2, write_skeleton=False, skeleton_out1='', skeleton_out2='',
-                       write_aligned=True, aligned_out1='videos/aligned-david-choreo.mp4', aligned_out2='videos/aligned-davidcaro-choreo.mp4',
-                       write_combined=True, combined_out='verification/david-caro-choreo.mp4'))
+                       write_aligned=False, aligned_out1='videos/aligned-david-choreo.mp4', aligned_out2='videos/aligned-davidcaro-choreo.mp4',
+                       write_combined=False, combined_out='verification/david-caro-choreo.mp4'))
