@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.stats import norm
 
 from enum import IntEnum
 
@@ -32,6 +33,20 @@ class Joint(IntEnum):
 
 
 class DanceScorer:
+    # Range values for the min-max joint angles
+    RANGE = {
+                "lshoulder" : 3.099920992,
+                "rShoulder" : 3.115298634,
+                "lelbow" : 3.139355155,
+                "relbow" : 3.140255528,
+                "lhip" : 2.306497931,
+                "rhip" : 2.352498353,
+                "lknee" : 2.422342539,
+                "rknee" : 2.163526058,
+                "lankle" : 2.097560167,
+                "rankle" : 2.271983564
+            }
+    SIGMA_SCALE = 12
 
     def __init__(self):
 
@@ -213,9 +228,6 @@ class DanceScorer:
             A dictionary containing scores for individual limbs as well as an overall score
         """
 
-
-        np.save('david-choreo',np.array(self.poses['student']))
-        np.save('davidcaro-choreo', np.array(self.poses['teacher']))
         self._calc_dance_metrics("student")
         self._calc_dance_metrics("teacher")
 
@@ -273,6 +285,19 @@ class DanceScorer:
             "rankle" : None
         }
 
+        scores = {
+            "lshoulder" : None,
+            "rShoulder" : None,
+            "lelbow" : None,
+            "relbow" : None,
+            "lhip" : None,
+            "rhip" : None,
+            "lknee" : None,
+            "rknee" : None,
+            "lankle" : None,
+            "rankle" : None
+        }
+
         for joint in position_errors:
             for i in range(self.position_metrics['student'][joint].shape[0]):
                 if self.position_metrics['student'][joint][i]==-1 or self.position_metrics['teacher'][joint][i]==-1:
@@ -284,7 +309,13 @@ class DanceScorer:
             avg_position_errors[joint] = np.average(position_errors[joint])
             avg_velocity_errors[joint] = np.average(velocity_errors[joint])
 
-        return avg_position_errors, avg_velocity_errors
+            sigma = DanceScorer.RANGE[joint]/DanceScorer.SIGMA_SCALE
+
+            z = avg_position_errors[joint]/sigma
+            scores[joint] = 2.5*((-1*(norm.cdf(abs(z))*2-1))+1)
+
+
+        return scores
 
 
 if __name__ == "__main__":
