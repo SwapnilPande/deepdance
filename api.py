@@ -1,7 +1,7 @@
 import sys
 from flask import Flask, request 
 import os
-from pose_estimation import PoseEstimator
+import pose_estimation
 import json
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ def create():
 	request.files['teacher'].save("./videos/master.webm")
 	request.files['student'].save("./videos/student.webm")
 
-	pose_estimator = PoseEstimator()
+	pose_estimator = pose_estimation.PoseEstimator()
 
 	#Get scores
 	return json.dumps(pose_estimator.compare_videos("./videos/student.webm", "./videos/master.webm", write_skeleton=False, skeleton_out1='', skeleton_out2='',
