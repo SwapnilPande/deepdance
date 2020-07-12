@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.stats import norm
 
+import cv2
+from tqdm import tqdm
 from enum import IntEnum
 
 class Joint(IntEnum):
@@ -221,6 +223,81 @@ class DanceScorer:
         self.poses["teacher"].append(teacher_pose)
 
 
+    def generate_wireframe_video(self, fname):
+        api = cv2.CAP_FFMPEG
+        code = cv2.VideoWriter.fourcc('m', 'p', '4', 'v')
+        output = cv2.VideoWriter(fname, api, code, 30, (1920,1080*2))
+
+        # Resolution of the video frames
+        resolution = (1920,1080)
+
+
+        joint_connections = [
+            [Joint.NECK, Joint.NOSE],
+            [Joint.NECK, Joint.LSHOULDER],
+            [Joint.LSHOULDER, Joint.LELBOW],
+            [Joint.LELBOW, Joint.LWRIST],
+            [Joint.NECK, Joint.RSHOULDER],
+            [Joint.RSHOULDER, Joint.RELBOW],
+            [Joint.RELBOW, Joint.RWRIST],
+            [Joint.NECK, Joint.MIDHIP],
+            [Joint.MIDHIP, Joint.LHIP],
+            [Joint.LHIP, Joint.LKNEE],
+            [Joint.LKNEE, Joint.LANKLE],
+            [Joint.LANKLE, Joint.LBIGTOE],
+            [Joint.MIDHIP, Joint.RHIP],
+            [Joint.RHIP, Joint.RKNEE],
+            [Joint.RKNEE, Joint.RANKLE],
+            [Joint.RANKLE, Joint.RBIGTOE]
+        ]
+
+        print(len(self.poses["student"]))
+        print(len(self.poses["teacher"]))
+        with tqdm(total=len(self.poses["student"]), desc='Writing') as pbar:
+            for pose_student, pose_teacher in zip(self.poses["student"], self.poses["teacher"]):
+                image_student = np.zeros(shape = (resolution[1], resolution[0], 3), dtype = np.uint8)
+                image_teacher = np.zeros(shape = (resolution[1], resolution[0], 3), dtype = np.uint8)
+
+                for connection in joint_connections:
+                    if(pose_student[0, connection[0], 2] > 0.1 and pose_student[0, connection[1], 2] > 0.1):
+                        start_point = tuple(pose_student[0, connection[0], 0:2])
+
+                        # End coordinate, here (250, 250)
+                        # represents the bottom right corner of image
+                        end_point = tuple(pose_student[0, connection[1], 0:2])
+
+                        # Green color in BGR
+                        color = (255, 0, 0)
+
+                        # Line thickness of 9 px
+                        thickness = 9
+
+                        # Using cv2.line() method
+                        # Draw a diagonal green line with thickness of 9 px
+                        image_student = cv2.line(image_student, start_point, end_point, color, thickness)
+
+                    if(pose_teacher[0, connection[0], 2] > 0.1 and pose_teacher[0, connection[1], 2] > 0.1):
+                        start_point = tuple(pose_teacher[0, connection[0], 0:2])
+
+                        # End coordinate, here (250, 250)
+                        # represents the bottom right corner of image
+                        end_point = tuple(pose_teacher[0, connection[1], 0:2])
+
+                        # Green color in BGR
+                        color = (0, 0, 255)
+
+                        # Line thickness of 9 px
+                        thickness = 9
+
+                        # Using cv2.line() method
+                        # Draw a diagonal green line with thickness of 9 px
+                        image_teacher = cv2.line(image_teacher, start_point, end_point, color, thickness)
+
+                image = np.concatenate((image_teacher, image_student), axis=0)
+                output.write(image)
+                pbar.update(1)
+        output.release()
+
     def score_dancer(self):
         """Generates a score rating the quality of the dancer.
 
@@ -337,89 +414,99 @@ if __name__ == "__main__":
                 "numpyfiles/david-ymca.npy",
                 "numpyfiles/FF-caro1.npy",
                 "numpyfiles/FF-caro2.npy",
-                "numpyfiles/null-ymca.npy"]
-    # keypoints = np.squeeze(np.load("posekeypoints.npy"))
+                "numpyfiles/null-ymca.npy",
+                "numpyfiles/davidcaro-choreo.npy",
+                "numpyfiles/david-choreo.npy",]
 
-    joint_extremes = {
-            "lshoulder" : {
-                "min" : 5.0,
-                "max" : 0.0
-            },
-            "rShoulder" : {
-                "min" : 5.0,
-                "max" : 0.0
-            },
-            "lelbow" : {
-                "min" : 5.0,
-                "max" : 0.0
-            },
-            "relbow" : {
-                "min" : 5.0,
-                "max" : 0.0
-            },
-            "lhip" : {
-                "min" : 5.0,
-                "max" : 0.0
-            },
-            "rhip" : {
-                "min" : 5.0,
-                "max" : 0.0
-            },
-            "lknee" : {
-                "min" : 5.0,
-                "max" : 0.0
-            },
-            "rknee" : {
-                "min" : 5.0,
-                "max" : 0.0
-            },
-            "lankle" : {
-                "min" : 5.0,
-                "max" : 0.0
-            },
-            "rankle" : {
-                "min" : 5.0,
-                "max" : 0.0
-            }
-        }
+    test = DanceScorer()
+    data = np.load(datasets[8])
+    test.poses["teacher"] = data
+    data = np.load(datasets[9])
+    test.poses["student"] = data
+    test.generate_wireframe_video("test_combine.mp4")
 
-    for dataset in datasets:
-        data = np.load(dataset)
-        test = DanceScorer()
-        print(data.shape)
-        test.poses["student"] = data
+    # # keypoints = np.squeeze(np.load("posekeypoints.npy"))
 
-        test._calc_dance_metrics("student")
+    # joint_extremes = {
+    #         "lshoulder" : {
+    #             "min" : 5.0,
+    #             "max" : 0.0
+    #         },
+    #         "rShoulder" : {
+    #             "min" : 5.0,
+    #             "max" : 0.0
+    #         },
+    #         "lelbow" : {
+    #             "min" : 5.0,
+    #             "max" : 0.0
+    #         },
+    #         "relbow" : {
+    #             "min" : 5.0,
+    #             "max" : 0.0
+    #         },
+    #         "lhip" : {
+    #             "min" : 5.0,
+    #             "max" : 0.0
+    #         },
+    #         "rhip" : {
+    #             "min" : 5.0,
+    #             "max" : 0.0
+    #         },
+    #         "lknee" : {
+    #             "min" : 5.0,
+    #             "max" : 0.0
+    #         },
+    #         "rknee" : {
+    #             "min" : 5.0,
+    #             "max" : 0.0
+    #         },
+    #         "lankle" : {
+    #             "min" : 5.0,
+    #             "max" : 0.0
+    #         },
+    #         "rankle" : {
+    #             "min" : 5.0,
+    #             "max" : 0.0
+    #         }
+    #     }
 
-        dataset_average = 0.0
-        dataset_count = 0.0
-        for joint in test.velocity_metrics["student"]:
+    # for dataset in datasets:
+    #     data = np.load(dataset)
+        # test = DanceScorer()
+        # print(data.shape)
+        # test.poses["student"] = data
 
-            dataset_average += np.sum(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0])
-            dataset_count += len(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0])
+    #     test._calc_dance_metrics("student")
 
-            temp_max_val = 0.0
-            temp_min_val = 5.0
+    #     dataset_average = 0.0
+    #     dataset_count = 0.0
+    #     for joint in test.velocity_metrics["student"]:
 
-            temp_max_val = np.amax(test.velocity_metrics["student"][joint])
+    #         dataset_average += np.sum(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0])
+    #         dataset_count += len(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0])
 
-            if(len(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0]) > 0):
-                temp_min_val = np.amin(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0])
+    #         temp_max_val = 0.0
+    #         temp_min_val = 5.0
 
-            if(temp_max_val > joint_extremes[joint]["max"]):
-                joint_extremes[joint]["max"] = temp_max_val
+    #         temp_max_val = np.amax(test.velocity_metrics["student"][joint])
 
-            if(temp_min_val < joint_extremes[joint]["min"]):
-                joint_extremes[joint]["min"] = temp_min_val
+    #         if(len(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0]) > 0):
+    #             temp_min_val = np.amin(test.velocity_metrics["student"][joint][test.velocity_metrics["student"][joint] >= 0])
+
+    #         if(temp_max_val > joint_extremes[joint]["max"]):
+    #             joint_extremes[joint]["max"] = temp_max_val
+
+    #         if(temp_min_val < joint_extremes[joint]["min"]):
+    #             joint_extremes[joint]["min"] = temp_min_val
 
 
-        print("{} average velocity: {}".format(dataset, dataset_average/dataset_count))
+    #     print("{} average velocity: {}".format(dataset, dataset_average/dataset_count))
 
 
 
 
-    for joint in test.velocity_metrics["student"]:
-        print("{}: {} {}".format(joint, joint_extremes[joint]["min"], joint_extremes[joint]["max"]))
+    # for joint in test.velocity_metrics["student"]:
+    #     print("{}: {} {}".format(joint, joint_extremes[joint]["min"], joint_extremes[joint]["max"]))
 
 
     # test.poses['student'] = dancer
