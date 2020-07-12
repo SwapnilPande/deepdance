@@ -8,7 +8,7 @@ import math
 # OUTPUT: Does not return any values, but saves audio as wav file
 def extract_audio(dir, video_file):
     track_name = video_file.split(".")
-    audio_output = track_name[0] + "WAV.wav"  # !! CHECK TO SEE IF FILE IS IN UPLOADS DIRECTORY
+    audio_output = track_name[2] + "WAV.wav"  # !! CHECK TO SEE IF FILE IS IN UPLOADS DIRECTORY
     output = dir + audio_output
     call(["avconv", "-y", "-i", dir+video_file, "-vn", "-ac", "1", "-f", "wav", output])
     return output

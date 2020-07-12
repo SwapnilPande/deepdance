@@ -14,8 +14,8 @@ def align(fname1, fname2, write=False, outpath1='', outpath2='', offset=0):
     :param outpath2: path for video2 if saving
     :return: frames1, frames2, fps, shape1, shape2
     '''
-    delay = alignment_by_row(fname1, fname2, './')
-
+    # delay = alignment_by_row(fname1, fname2, '..')
+    delay = (0,0)
     cap1 = cv2.VideoCapture(fname1)
     cap2 = cv2.VideoCapture(fname2)
     fps = cap1.get(cv2.CAP_PROP_FPS)

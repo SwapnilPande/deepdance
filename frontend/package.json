@@ -20,6 +20,7 @@
     "electron": "^9.1.0"
   },
   "dependencies": {
+    "browserify": "^16.5.1",
     "file-saver": "^2.0.2",
     "python-shell": "^2.0.1",
     "uniq": "^1.0.1",

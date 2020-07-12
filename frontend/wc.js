@@ -1,6 +1,6 @@
 const vid = document.getElementById('video');
 const teacher = document.getElementById('teacher'); 
-navigator.mediaDevices.getUserMedia({video: true}) // request cam
+navigator.mediaDevices.getUserMedia({video: true, audio:true}) // request cam
 .then(stream => {
   vid.srcObject = stream; // don't use createObjectURL(MediaStream)
   return vid.play(); // returns a Promise
