@@ -4,7 +4,7 @@ import numpy as np
 from alignment_by_row_channels import align as alignment_by_row
 
 
-def align(fname1, fname2, write=False, outpath1 = '', outpath2=''):
+def align(fname1, fname2, write=False, outpath1='', outpath2='', offset=0):
     '''
     captures videos and aligns the
     :param fname1: filepath
@@ -15,8 +15,6 @@ def align(fname1, fname2, write=False, outpath1 = '', outpath2=''):
     :return: frames1, frames2, fps, shape1, shape2
     '''
     delay = alignment_by_row(fname1, fname2, './')
-
-    offset = 0
 
     cap1 = cv2.VideoCapture(fname1)
     cap2 = cv2.VideoCapture(fname2)
@@ -98,5 +96,9 @@ def check_alignment_from_files(fname1, fname2, outpath):
     check_alignment(frames1, frames2,fps, (int(frame_width1), int(frame_height1)), (int(frame_width2), int(frame_height2)), outpath)
 
 if __name__ == '__main__':
-    frames1, frames2, fps, shape1, shape2 = align('videos/david-ymca.mp4', 'videos/ymca.mp4')
-    check_alignment(frames1, frames2, fps, shape1, shape2, 'verification/ymca-aligned.mp4')
+    frames1, frames2, fps, shape1, shape2 = align('videos/david-ymca.mp4', 'videos/ymca.mp4',
+                                                  write=True,
+                                                  outpath1='FF-align-david-ymca.mp4',
+                                                  outpath2='FF-align-caro-ymca.mp4',
+                                                  offset=7000)
+    check_alignment(frames1, frames2, fps, shape1, shape2, 'verification/ff-ymca-aligned.mp4')

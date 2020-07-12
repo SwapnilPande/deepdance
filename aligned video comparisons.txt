@@ -10,3 +10,6 @@ caroline to caroline
 
 ffcaro to ffcaro
 ({'lshoulder': 0.2957651, 'rShoulder': 0.36371976, 'lelbow': 0.55728596, 'relbow': 0.38713145, 'lhip': 0.17357115, 'rhip': 0.16491835, 'lknee': 0.21125811, 'rknee': 0.21676679, 'lankle': 0.30474687}, {'lshoulder': 7.450131, 'rShoulder': 7.2843747, 'lelbow': 11.650993, 'relbow': 12.356046, 'lhip': 5.8807, 'rhip': 5.2350097, 'lknee': 6.9796987, 'rknee': 7.067009, 'lankle': 45.0004})
+
+ffymca
+({'lshoulder': 0.58163613, 'rShoulder': 0.57018656, 'lelbow': 0.64074177, 'relbow': 0.55620795, 'lhip': 0.10523933, 'rhip': 0.20003286, 'lknee': 0.01671676, 'rknee': 0.04394387, 'lankle': 0.0}, {'lshoulder': 5.203464, 'rShoulder': 4.981195, 'lelbow': 9.444562, 'relbow': 9.396562, 'lhip': 4.773003, 'rhip': 5.006979, 'lknee': 8.293209, 'rknee': 7.64964, 'lankle': 87.6687})
