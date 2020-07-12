@@ -37,21 +37,20 @@ function startRecording(){
     btn.onclick = startRecording;
   }
 }
-async function score(blob, teacher){
+async function score(student, teacher){
   // uses the <a download> to download a Blob
-  console.log(blob)
-  let a = document.createElement('a'); 
-  a.href = URL.createObjectURL(blob);
-  a.download = 'recorded.webm';
-  document.body.appendChild(a);
-  a.click();
+  // let a = document.createElement('a'); 
+  // a.href = URL.createObjectURL(student);
+  // a.download = 'recorded.webm';
+  // document.body.appendChild(a);
+  // a.click();
 
  var myHeaders = new Headers();
 //myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 let master = await fetch(teacher).then(r => r.blob());
 var formdata = new FormData();
 formdata.append("teacher", master, 'teacher.webm');
-formdata.append("student", blob, 'recorded.webm' );
+formdata.append("student", student,  'student.webm' );
 //localStorage.myfile = blob;
 
 var requestOptions = {
