@@ -64,7 +64,7 @@ fetch("http://127.0.0.1:5000/test", requestOptions)
   .then(response => response.text())
   .then(result => {
     console.log(result);
-    document.getElementById("helper_message").innerHTML = "Your score: " + result.average + ". That's pretty good! Next time, focus more on your left shoulder (score: " + lshoulder + ")";
+    document.getElementById("helper_message").innerHTML = "Your score: " + result.average + ". That's pretty good! Next time, focus more on your left shoulder (score: " + result.lshoulder + ")";
   })
   .catch(error => console.log('error', error));
 }
