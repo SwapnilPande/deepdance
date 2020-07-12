@@ -4,6 +4,7 @@ import sys
 import cv2
 from tqdm import tqdm
 from DanceScorer import DanceScorer
+from alignment import align
 
 try:
     sys.path.append('/usr/local/python')
@@ -87,33 +88,20 @@ class PoseEstimator:
         print('1/1')
         self.write_video('result.mp4', frames, fps, (int(frame_width), int(frame_height)))
 
-    def compare_videos(self, path1, path2):
-        video1 = cv2.VideoCapture(path1)
-        fps1 = video1.get(cv2.CAP_PROP_FPS)
-        frame_width1 = video1.get(3)
-        frame_height1 = video1.get(4)
+    def compare_videos(self, path1, path2, write=False):
+        frames1, frames2, fps, shape1, shape2 = align(path1, path2)
 
-        video2 = cv2.VideoCapture(path2)
-        fps2 = video2.get(cv2.CAP_PROP_FPS)
-        frame_width2 = video2.get(3)
-        frame_height2 = video2.get(4)
-
-        frames1, frames2 = [],[]
-        with tqdm(total=video1.get(cv2.CAP_PROP_FRAME_COUNT), desc='Processing') as pbar:
-            while 1:
-                success1, frame1 = video1.read()
-                success2, frame2 = video2.read()
-                if success1 and success2:
-                    datum1, datum2 = self.process_image_pair(frame1, frame2)
-                    frames1.append(datum1.cvOutputData)
-                    frames2.append(datum2.cvOutputData)
-                    pbar.update(1)
-                else:
-                    break
-        # print('1/2')
-        # self.write_video('video1Processed.mp4', frames1, fps1, (int(frame_width1), int(frame_height1)))
-        # print('2/2')
-        # self.write_video('video2Processed.mp4', frames2, fps2, (int(frame_width2), int(frame_height2)))
+        cvOut1 = []
+        cvOut2 = []
+        for i in tqdm(range(len(frames1))):
+            datum1, datum2 = self.process_image_pair(frames1[i], frames2[i])
+            cvOut1.append(datum1.cvOutputData)
+            cvOut2.append(datum2.cvOutputData)
+        if write:
+            print('1/2')
+            self.write_video('video1Processed.mp4', cvOut1, fps, shape1)
+            print('2/2')
+            self.write_video('video2Processed.mp4', cvOut2, fps, shape2)
         return self.dance_end()
 
     def write_video(self, fname, frames,fps, shape):
@@ -129,12 +117,7 @@ class PoseEstimator:
 if __name__ == "__main__":
 
     pose_estimator = PoseEstimator()
-    # # Process Image
-    # datum = pose_estimator.process_image_path('COCO_val2014_000000000192.jpg')
-    # # Display Image
-    # pose_estimator.display_pose(datum)
 
-    fname1 = 'videos/FF-aligned-caroline-choreo.mp4'
-    fname2 = 'videos/FF-aligned-caroline-choreo-2.mp4'
-    print(pose_estimator.compare_videos(fname1, fname2))
-    # pose_estimator.iterate_over_video('videos/macarena.mp4')
+    fname1 = 'videos/david-ymca.mp4'
+    fname2 = 'videos/ymca.mp4'
+    print(pose_estimator.compare_videos(fname1, fname2, write=False))
