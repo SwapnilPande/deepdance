@@ -1,5 +1,3 @@
-import alignment_by_row_channels
-
 from alignment_by_row_channels import align
 
 dir = 'video/'

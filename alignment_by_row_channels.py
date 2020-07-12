@@ -3,7 +3,6 @@ import numpy as np
 from subprocess import call
 import math
 
-
 # Extract audio from video file, save as wav auido file
 # INPUT: Video file
 # OUTPUT: Does not return any values, but saves audio as wav file
@@ -30,8 +29,8 @@ def make_horiz_bins(data, fft_bin_size, overlap, box_height):
     if (len(sample_data) == fft_bin_size):  # if there are enough audio points left to create a full fft bin
         intensities = fourier(sample_data)  # intensities is list of fft results
         for i in range(len(intensities)):
-            box_y = i/box_height
-            if horiz_bins.has_key(box_y):
+            box_y = int(i/box_height)
+            if box_y in horiz_bins:
                 horiz_bins[box_y].append((intensities[i], 0, i))  # (intensity, x, y)
             else:
                 horiz_bins[box_y] = [(intensities[i], 0, i)]
@@ -42,8 +41,8 @@ def make_horiz_bins(data, fft_bin_size, overlap, box_height):
         if (len(sample_data) == fft_bin_size):
             intensities = fourier(sample_data)
             for k in range(len(intensities)):
-                box_y = k/box_height
-                if horiz_bins.has_key(box_y):
+                box_y = int(k/box_height)
+                if box_y in horiz_bins:
                     horiz_bins[box_y].append((intensities[k], x_coord_counter, k))  # (intensity, x, y)
                 else:
                     horiz_bins[box_y] = [(intensities[k], x_coord_counter, k)]
@@ -58,7 +57,7 @@ def make_horiz_bins(data, fft_bin_size, overlap, box_height):
 def fourier(sample):  #, overlap):
     mag = []
     fft_data = np.fft.fft(sample)  # Returns real and complex value pairs
-    for i in range(len(fft_data)/2):
+    for i in range(int(len(fft_data)/2)):
         r = fft_data[i].real**2
         j = fft_data[i].imag**2
         mag.append(round(math.sqrt(r+j),2))
@@ -70,8 +69,8 @@ def make_vert_bins(horiz_bins, box_width):
     boxes = {}
     for key in horiz_bins.keys():
         for i in range(len(horiz_bins[key])):
-            box_x = horiz_bins[key][i][1] / box_width
-            if boxes.has_key((box_x,key)):
+            box_x = int(horiz_bins[key][i][1] / box_width)
+            if (box_x, key) in boxes:
                 boxes[(box_x,key)].append((horiz_bins[key][i]))
             else:
                 boxes[(box_x,key)] = [(horiz_bins[key][i])]
@@ -91,7 +90,7 @@ def find_bin_max(boxes, maxes_per_box):
                     max_intensities.append(boxes[key][i])
                     max_intensities.remove(min(max_intensities))
         for j in range(len(max_intensities)):
-            if freqs_dict.has_key(max_intensities[j][2]):
+            if max_intensities[j][2] in freqs_dict:
                 freqs_dict[max_intensities[j][2]].append(max_intensities[j][1])
             else:
                 freqs_dict[max_intensities[j][2]] = [max_intensities[j][1]]
@@ -102,7 +101,7 @@ def find_bin_max(boxes, maxes_per_box):
 def find_freq_pairs(freqs_dict_orig, freqs_dict_sample):
     time_pairs = []
     for key in freqs_dict_sample.keys():  # iterate through freqs in sample
-        if freqs_dict_orig.has_key(key):  # if same sample occurs in base
+        if key in freqs_dict_orig: # if same sample occurs in base
             for i in range(len(freqs_dict_sample[key])):  # determine time offset
                 for j in range(len(freqs_dict_orig[key])):
                     time_pairs.append((freqs_dict_sample[key][i], freqs_dict_orig[key][j]))
@@ -114,12 +113,12 @@ def find_delay(time_pairs):
     t_diffs = {}
     for i in range(len(time_pairs)):
         delta_t = time_pairs[i][0] - time_pairs[i][1]
-        if t_diffs.has_key(delta_t):
+        if delta_t in t_diffs:
             t_diffs[delta_t] += 1
         else:
             t_diffs[delta_t] = 1
     t_diffs_sorted = sorted(t_diffs.items(), key=lambda x: x[1])
-    print t_diffs_sorted
+    # print(t_diffs_sorted)
     time_delay = t_diffs_sorted[-1][0]
 
     return time_delay
@@ -151,22 +150,3 @@ def align(video1, video2, dir, fft_bin_size=1024, overlap=0, box_height=512, box
         return (seconds, 0)
     else:
         return (0, abs(seconds))
-
-
-
-# ======= TEST FILES ==============
-# audio1 = "regina6POgShQ-lC4.mp4"
-# # audio2 = "reginaJo2cUWpILMgWAV.wav"
-# audio1 = "Settle2kFaZIKtcn6s.mp4"
-# audio2 = "Settle2d_tj-9_dGog.mp4"
-# audio1 = "DanielZ5PPlk53IMY.mp4"
-# audio2 = "Daniel08ycq2T_ab4.mp4"
-# directory = "./uploads/"
-# t = align(audio1, audio2, directory)
-# print t
-
-
-
-
-
-
